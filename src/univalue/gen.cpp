@@ -22,7 +22,6 @@ static void initJsonEscape()
 {
     escapes[(int)'"'] = "\\\"";
     escapes[(int)'\\'] = "\\\\";
-    escapes[(int)'/'] = "\\/";
     escapes[(int)'\b'] = "\\b";
     escapes[(int)'\f'] = "\\f";
     escapes[(int)'\n'] = "\\n";
@@ -75,4 +74,3 @@ int main (int argc, char *argv[])
 	outputEscape();
 	return 0;
 }
-

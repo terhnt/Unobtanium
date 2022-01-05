@@ -519,6 +519,7 @@ extern CBlockTreeDB *pblocktree;
 
 class CValidationInterface {
 protected:
+    virtual void UpdatedBlockTip(const uint256 &newHashTip) {}
     virtual void SyncTransaction(const CTransaction &tx, const CBlock *pblock) {};
     virtual void EraseFromWallet(const uint256 &hash) {};
     virtual void SetBestChain(const CBlockLocator &locator) {};

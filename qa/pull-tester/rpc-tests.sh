@@ -29,6 +29,11 @@ testScripts=(
     'zapwallettxes.py'
 #    'forknotify.py'
 );
+
+if [ "x$ENABLE_ZMQ" = "x1" ]; then
+  testScripts=( ${testScripts[@]} 'zmq_test.py' )
+fi
+
 if [ "x${ENABLE_UNOBTANIUMD}${ENABLE_UTILS}${ENABLE_WALLET}" = "x111" ]; then
     for (( i = 0; i < ${#testScripts[@]}; i++ ))
     do

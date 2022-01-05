@@ -49,6 +49,9 @@ if ENABLE_WALLET
 UNOBTANIUM_INCLUDES += $(BDB_CPPFLAGS)
 EXTRA_LIBRARIES += libunobtanium_wallet.a
 endif
+if ENABLE_ZMQ
+EXTRA_LIBRARIES += libbitcoin_zmq.a
+endif
 
 if BUILD_UNOBTANIUM_LIBS
 lib_LTLIBRARIES = libunobtaniumconsensus.la
@@ -139,7 +142,11 @@ UNOBTANIUM_CORE_H = \
   utilstrencodings.h \
   utiltime.h \
   version.h \
-  wallet/walletdb.h \
+	wallet/walletdb.h \
+  zmq/zmqabstractnotifier.h \
+  zmq/zmqconfig.h\
+  zmq/zmqnotificationinterface.h \
+  zmq/zmqpublishnotifier.h
   wallet/wallet.h \
   wallet/wallet_ismine.h \
   compat/sanity.h
@@ -178,6 +185,16 @@ libunobtanium_server_a_SOURCES = \
   txdb.cpp \
   txmempool.cpp \
   $(UNOBTANIUM_CORE_H)
+
+if ENABLE_ZMQ
+LIBUNOBTANIUM_ZMQ=libbitcoin_zmq.a
+
+libunobtanium_zmq_a_CPPFLAGS = $(BITCOIN_INCLUDES)
+libunobtanium_zmq_a_SOURCES = \
+  zmq/zmqabstractnotifier.cpp \
+  zmq/zmqnotificationinterface.cpp \
+  zmq/zmqpublishnotifier.cpp
+endif
 
 # wallet: shared between unobtaniumd and unobtanium-qt, but only linked
 # when wallet enabled
@@ -297,6 +314,10 @@ unobtaniumd_LDADD = \
   $(LIBLEVELDB) \
   $(LIBMEMENV) \
   $(LIBSECP256K1)
+
+if ENABLE_ZMQ
+unobtaniumd_LDADD += $(LIBUNOBTANIUM_ZMQ) $(ZMQ_LIBS)
+endif
 
 if ENABLE_WALLET
 unobtaniumd_LDADD += libunobtanium_wallet.a

@@ -141,6 +141,7 @@ UNOBTANIUM_CORE_H = \
   utilmoneystr.h \
   utilstrencodings.h \
   utiltime.h \
+	validationinterface.h \
   version.h \
 	wallet/walletdb.h \
   zmq/zmqabstractnotifier.h \
@@ -184,6 +185,7 @@ libunobtanium_server_a_SOURCES = \
   timedata.cpp \
   txdb.cpp \
   txmempool.cpp \
+	validationinterface.cpp \
   $(UNOBTANIUM_CORE_H)
 
 if ENABLE_ZMQ

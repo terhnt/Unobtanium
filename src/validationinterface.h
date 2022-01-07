@@ -45,6 +45,8 @@ protected:
 };
 
 struct CMainSignals {
+    /** Notifies listeners of updated block chain tip */
+    boost::signals2::signal<void (const uint256 &)> UpdatedBlockTip;
     /** Notifies listeners of updated transaction data (transaction, and optionally the block it is found in. */
     boost::signals2::signal<void (const CTransaction &, const CBlock *)> SyncTransaction;
     /** Notifies listeners of an erased transaction (currently disabled, requires transaction replacement). */

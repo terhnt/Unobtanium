@@ -419,6 +419,9 @@ bool ProcessBlockFound(CBlock* pblock, CWallet& wallet, CReserveKey& reservekey)
             return error("BitcoinMiner: generated block is stale");
     }
 
+    // Inform about the new block
+    GetMainSignals().BlockFound(pblock->GetHash());
+
     // Remove key from key pool
     reservekey.KeepKey();
 

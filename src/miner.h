@@ -11,6 +11,7 @@
 #include <stdint.h>
 
 class CBlockIndex;
+class CChainParams;
 class CReserveKey;
 class CScript;
 class CWallet;
@@ -23,7 +24,7 @@ struct CBlockTemplate
 };
 
 /** Run the miner threads */
-void GenerateBitcoins(bool fGenerate, CWallet* pwallet, int nThreads);
+void GenerateBitcoins(bool fGenerate, int nThreads, const CChainParams& chainparams);
 bool ProcessBlockFound(CBlock* pblock, CWallet& wallet, CReserveKey& reservekey);
 
 /** Generate a new block, without valid proof-of-work */

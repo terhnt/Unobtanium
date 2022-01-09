@@ -11,6 +11,7 @@
 
 class CBlock;
 struct CBlockLocator;
+//class CScript;
 class CReserveScript;
 class CTransaction;
 class CValidationInterface;

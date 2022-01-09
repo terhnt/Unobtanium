@@ -32,8 +32,8 @@ bool bSpendZeroConfChange = true;
 bool fSendFreeTransactions = false;
 bool fPayAtLeastCustomFee = true;
 
-/** 
- * Fees smaller than this (in satoshi) are considered zero fee (for transaction creation) 
+/**
+ * Fees smaller than this (in satoshi) are considered zero fee (for transaction creation)
  * Override with -mintxfee
  */
 CFeeRate CWallet::minTxFee = CFeeRate(1000);
@@ -1951,7 +1951,7 @@ bool CWallet::SetDefaultKey(const CPubKey &vchPubKey)
 
 /**
  * Mark old keypool keys as used,
- * and generate all new keys 
+ * and generate all new keys
  */
 bool CWallet::NewKeyPool()
 {
@@ -2297,6 +2297,17 @@ void CWallet::UpdatedTransaction(const uint256 &hashTx)
     }
 }
 
+void CWallet::GetScriptForMining(CScript &script)
+{
+    CReserveKey reservekey(this);
+    reservekey.KeepKey();
+
+    CPubKey pubkey;
+    if (!reservekey.GetReservedKey(pubkey))
+        return;
+    script = CScript() << ToByteVector(pubkey) << OP_CHECKSIG;
+}
+
 void CWallet::LockCoin(COutPoint& output)
 {
     AssertLockHeld(cs_wallet); // setLockedCoins
@@ -2561,4 +2572,3 @@ bool CMerkleTx::AcceptToMemoryPool(bool fLimitFree, bool fRejectAbsurdFee)
     CValidationState state;
     return ::AcceptToMemoryPool(mempool, state, *this, fLimitFree, NULL, fRejectAbsurdFee);
 }
-

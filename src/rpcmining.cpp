@@ -139,9 +139,6 @@ UniValue setgenerate(const UniValue& params, bool fHelp)
             + HelpExampleRpc("setgenerate", "true, 1")
         );
 
-    if (pwalletMain == NULL)
-        throw JSONRPCError(RPC_METHOD_NOT_FOUND, "Method not found (disabled)");
-
     bool fGenerate = true;
     if (params.size() > 0)
         fGenerate = params[0].get_bool();
@@ -161,7 +158,13 @@ UniValue setgenerate(const UniValue& params, bool fHelp)
         int nHeightEnd = 0;
         int nHeight = 0;
         int nGenerate = (nGenProcLimit > 0 ? nGenProcLimit : 1);
-        CReserveKey reservekey(pwalletMain);
+
+        CScript coinbaseScript;
+        GetMainSignals().ScriptForMining(coinbaseScript);
+
+        //throw an error if no script was provided
+        if (!coinbaseScript.size())
+            throw JSONRPCError(RPC_INTERNAL_ERROR, "No coinbase script available (mining requires a wallet)");
 
         {   // Don't keep cs_main locked
             LOCK(cs_main);
@@ -173,9 +176,9 @@ UniValue setgenerate(const UniValue& params, bool fHelp)
         UniValue blockHashes(UniValue::VARR);
         while (nHeight < nHeightEnd)
         {
-            unique_ptr<CBlockTemplate> pblocktemplate(CreateNewBlockWithKey(reservekey));
+            unique_ptr<CBlockTemplate> pblocktemplate(CreateNewBlock(coinbaseScript));
             if (!pblocktemplate.get())
-                throw JSONRPCError(RPC_INTERNAL_ERROR, "Wallet keypool empty");
+                throw JSONRPCError(RPC_INTERNAL_ERROR, "Couldn't create new block");
             CBlock *pblock = &pblocktemplate->block;
             {
                 LOCK(cs_main);
@@ -198,7 +201,7 @@ UniValue setgenerate(const UniValue& params, bool fHelp)
     {
         mapArgs["-gen"] = (fGenerate ? "1" : "0");
         mapArgs ["-genproclimit"] = itostr(nGenProcLimit);
-        GenerateBitcoins(fGenerate, pwalletMain, nGenProcLimit);
+        GenerateBitcoins(fGenerate, nGenProcLimit, Params());
     }
 
     return NullUniValue;
@@ -244,9 +247,7 @@ UniValue getmininginfo(const UniValue& params, bool fHelp)
     obj.push_back(Pair("pooledtx",         (uint64_t)mempool.size()));
     obj.push_back(Pair("testnet",          Params().TestnetToBeDeprecatedFieldRPC()));
     obj.push_back(Pair("chain",            Params().NetworkIDString()));
-#ifdef ENABLE_WALLET
     obj.push_back(Pair("generate",         getgenerate(params, false)));
-#endif
     return obj;
 }
 

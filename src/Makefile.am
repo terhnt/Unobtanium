@@ -191,7 +191,7 @@ libunobtanium_server_a_SOURCES = \
 if ENABLE_ZMQ
 LIBUNOBTANIUM_ZMQ=libunobtanium_zmq.a
 
-libunobtanium_zmq_a_CPPFLAGS = $(BITCOIN_INCLUDES)
+libunobtanium_zmq_a_CPPFLAGS = $(UNOBTANIUM_INCLUDES)
 libunobtanium_zmq_a_SOURCES = \
   zmq/zmqabstractnotifier.cpp \
   zmq/zmqnotificationinterface.cpp \
@@ -409,10 +409,6 @@ clean-local:
 .rc.o:
   @test -f $(WINDRES)
   $(AM_V_GEN) $(WINDRES) -DWINDRES_PREPROC -i $< -o $@
-
-.mm.o:
-  $(AM_V_CXX) $(OBJCXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
-    $(CPPFLAGS) $(AM_CXXFLAGS) $(QT_INCLUDES) $(CXXFLAGS)  -c -o $@ $<
 
 %.pb.cc %.pb.h: %.proto
   @test -f $(PROTOC)

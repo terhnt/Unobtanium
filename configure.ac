@@ -138,7 +138,7 @@ AC_ARG_ENABLE([glibc-back-compat],
   [use_glibc_compat=no])
 
 AC_ARG_ENABLE([zmq],
-    [AC_HELP_STRING([--disable-zmq],
+    [AS_HELP_STRING([--disable-zmq],
     [Disable ZMQ notifications])],
     [use_zmq=$enableval],
     [use_zmq=yes])

@@ -97,7 +97,7 @@ public:
     void Broadcast(); //??
     void BlockChecked(const CBlock&, const CValidationState&);
     //void NewPoWValidBlock(const CBlockIndex *, const std::shared_ptr<const CBlock>&);
-}
+};
 
 CMainSignals& GetMainSignals();
 

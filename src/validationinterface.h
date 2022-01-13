@@ -11,6 +11,7 @@
 #include "primitives/transaction.h" // CTransaction(Ref)
 
 class CBlock;
+class CBlockIndex;
 struct CBlockLocator;
 class CReserveScript;
 class CTransaction;
@@ -43,9 +44,9 @@ protected:
     /** Notifies listeners of a block being disconnected */
     //virtual void BlockDisconnected(const std::shared_ptr<const CBlock> &block) {}
     /** Notifies listeners of updated transaction data (transaction, and optionally the block it is found in. */
-    virtual void SyncTransaction(const CTransaction &tx, Cblock *block) {} //    boost::signals2::signal<void (const CTransaction &, const CBlock *)> SyncTransaction;
+    virtual void SyncTransaction(const CTransaction &tx, CBlock *block) {} //    boost::signals2::signal<void (const CTransaction &, const CBlock *)> SyncTransaction;
     /** Notifies listeners of an erased transaction (currently disabled, requires transaction replacement). */
-    virtual void EraseTransaction(const uint2567 &hash) {}
+    virtual void EraseTransaction(const uint256 &hash) {}
     /** Notifies listeners of an updated transaction without new data (for now: a coinbase potentially becoming visible). */
     virtual void UpdatedTRansaction(const uint256 &hash) {}
     /** Notifies listeners of a the active block chain. */
@@ -54,8 +55,8 @@ protected:
     virtual void Inventory(const uint256 &hash) {} //boost::signals2::signal<void (const uint256 &)> Inventory;
     /** Tells listeners to broadcast their data. */
     //boost::signals2::signal<void ()> Broadcast;
-    virtual void ResendWalletTransactions(int64_t nBestBlockTime, CConnman* connman) {}
-    //virtual void ResendWalletTransactions() {} //?
+    //virtual void ResendWalletTransactions(int64_t nBestBlockTime, CConnman* connman) {}
+    virtual void ResendWalletTransactions() {} //?
     /** Notifies listeners of a block validation result */
     virtual void BlockChecked(const CBlock&, const CValidationState&) {} //boost::signals2::signal<void (const CBlock&, const CValidationState&)> BlockChecked;
     /** Notifies listeners that a key for mining is required (coinbase) */
@@ -92,8 +93,8 @@ public:
     void EraseTransaction(const uint256 &);
     void ScriptForMining(std::shared_ptr<CReserveScript>&);
     void BlockFound(const uint256 &);
-    void Broadcast(int64_t nBestBlockTime, CConnman* connman);
-    //void Broadcast(); ??
+    //void Broadcast(int64_t nBestBlockTime, CConnman* connman);
+    void Broadcast(); //??
     void BlockChecked(const CBlock&, const CValidationState&);
     //void NewPoWValidBlock(const CBlockIndex *, const std::shared_ptr<const CBlock>&);
 }

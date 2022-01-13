@@ -26,7 +26,7 @@ struct MainSignalsInstance {
   /** Notifies listeners about an inventory item being seen on the network. */
   boost::signals2::signal<void (const uint256 &)> Inventory;
   /** Tells listeners to broadcast their data. */
-  boost::signals2::signal<void ()> Broadcast;
+  boost::signals2::signal<void (int64_t nBestBlockTime)> Broadcast;
   /** Notifies listeners of a block validation result */
   boost::signals2::signal<void (const CBlock&, const CValidationState&)> BlockChecked;
   /** Notifies listeners that a key for mining is required (coinbase) */
@@ -139,8 +139,8 @@ void CMainSignals::Inventory(const uint256 &hash) {
     m_internals->Inventory(hash);
 }
 
-void CMainSignals::Broadcast(int64_t nBestBlockTime, CConnman* connman) {
-    m_internals->Broadcast(nBestBlockTime, connman);
+void CMainSignals::Broadcast(int64_t nBestBlockTime) {//, CConnman* connman) {
+    m_internals->Broadcast(nBestBlockTime);//, connman);
 }
 
 void CMainSignals::BlockChecked(const CBlock& block, const CValidationState& state) {

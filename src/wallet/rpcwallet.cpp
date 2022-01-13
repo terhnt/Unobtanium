@@ -2223,7 +2223,6 @@ UniValue getwalletinfo(const UniValue& params, bool fHelp)
         obj.push_back(Pair("unlocked_until", nWalletUnlockTime));
     return obj;
 
-    /*
     UniValue resendwallettransactions(const UniValue& params, bool fHelp)
     {
     //TODO Add EnsurewalletIsAvailable check.
@@ -2248,5 +2247,5 @@ UniValue getwalletinfo(const UniValue& params, bool fHelp)
     }
     return result;
     }
-    */
+
 }

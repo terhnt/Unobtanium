@@ -17,6 +17,8 @@ qt_linux_packages:=$(qt_linux_$(USE_LINUX_STATIC_QT5))
 
 wallet_packages=bdb
 
+zmq_packages=zeromq
+
 upnp_packages=miniupnpc
 
 ifneq ($(build_os),darwin)

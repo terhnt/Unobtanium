@@ -426,7 +426,7 @@ void static BitcoinMiner(const CChainParams& chainparams)
     unsigned int nExtraNonce = 0;
 
     boost::shared_ptr<CReserveScript> coinbaseScript;
-    GetMainSignals().ScriptForMining(coinbaseScript);
+    //GetMainSignals().ScriptForMining(coinbaseScript);
 
     try {
       //throw an error if no script was provided

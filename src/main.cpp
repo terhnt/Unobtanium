@@ -2130,7 +2130,8 @@ bool ActivateBestChain(CValidationState &state, CBlock *pblock) {
         bool fInitialDownload;
         {
             LOCK(cs_main);
-            pindexMostWork = FindMostWorkChain();
+            CBlockIndex *pindexOldTip = chainActive.Tip();
+            //pindexMostWork = FindMostWorkChain();
 
             // Whether we have anything to do at all.
             if (pindexMostWork == NULL || pindexMostWork == chainActive.Tip())
@@ -2140,6 +2141,7 @@ bool ActivateBestChain(CValidationState &state, CBlock *pblock) {
                 return false;
 
             pindexNewTip = chainActive.Tip();
+            //pindexFork = chainActive.FindFork(pindexOldTip);
             fInitialDownload = IsInitialBlockDownload();
         }
         // When we reach this point, we switched to a new tip (stored in pindexNewTip).
@@ -2156,7 +2158,7 @@ bool ActivateBestChain(CValidationState &state, CBlock *pblock) {
                         pnode->PushInventory(CInv(MSG_BLOCK, hashNewTip));
             }
             // Notify external listeners about the new tip.
-            GetMainSignals().UpdatedBlockTip(pindexNewTip, pindexFork, fInitialDownload);
+            //GetMainSignals().UpdatedBlockTip(pindexNewTip, pindexFork, fInitialDownload);
             uiInterface.NotifyBlockTip(hashNewTip);
         }
     } while(pindexMostWork != chainActive.Tip());

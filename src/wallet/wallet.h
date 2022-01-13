@@ -794,6 +794,7 @@ public:
 
     void ReturnKey();
     bool GetReservedKey(CPubKey &pubkey);
+    void KeepKey();
     void KeepScript() { KeepKey(); }
 };
 

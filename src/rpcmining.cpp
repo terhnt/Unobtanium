@@ -161,7 +161,7 @@ UniValue setgenerate(const UniValue& params, bool fHelp)
         int nGenerate = (nGenProcLimit > 0 ? nGenProcLimit : 1);
 
         boost::shared_ptr<CReserveScript> coinbaseScript;
-        GetMainSignals().ScriptForMining(coinbaseScript);
+        //GetMainSignals().ScriptForMining(coinbaseScript);
 
         //throw an error if no script was provided
         if (!coinbaseScript->reserveScript.size())

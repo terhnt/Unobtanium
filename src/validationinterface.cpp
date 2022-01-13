@@ -16,7 +16,7 @@ struct MainSignalsInstance {
   //boost::signals2::signal<void (const std::shared_ptr<const CBlock> &)> BlockDisconnected;
   //boost::signals2::signal<void (const CBlockIndex *, const std::shared_ptr<const CBlock>&)> NewPoWValidBlock;
   /** Notifies listeners of updated transaction data (transaction, and optionally the block it is found in. */
-  boost::signals2::signal<void (const CTransaction &, const CBlock *)> SyncTransaction;
+  //boost::signals2::signal<void (const CTransaction &, const CBlock *)> SyncTransaction;
   /** Notifies listeners of an erased transaction (currently disabled, requires transaction replacement). */
   boost::signals2::signal<void (const uint256 &)> EraseTransaction;
   /** Notifies listeners of an updated transaction without new data (for now: a coinbase potentially becoming visible). */
@@ -33,7 +33,7 @@ struct MainSignalsInstance {
   boost::signals2::signal<void (std::shared_ptr<CReserveScript>&)> ScriptForMining;
   /** Notifies listeners that a block has been successfully mined */
   boost::signals2::signal<void (const uint256 &)> BlockFound;
-}
+};
 
 static CMainSignals g_signals;
 
@@ -48,7 +48,7 @@ CMainSignals& GetMainSignals()
 
 void RegisterValidationInterface(CValidationInterface* pwalletIn) {
     g_signals.m_internals->UpdatedBlockTip.connect(boost::bind(&CValidationInterface::UpdatedBlockTip, pwalletIn, _1, _2, _3));
-    g_signals.m_internals->SyncTransaction.connect(boost::bind(&CValidationInterface::SyncTransaction, pwalletIn, _1, _2));
+    //g_signals.m_internals->SyncTransaction.connect(boost::bind(&CValidationInterface::SyncTransaction, pwalletIn, _1, _2));
     g_signals.m_internals->EraseTransaction.connect(boost::bind(&CValidationInterface::EraseFromWallet, pwalletIn, _1));
     g_signals.m_internals->UpdatedTransaction.connect(boost::bind(&CValidationInterface::UpdatedTransaction, pwalletIn, _1));
     g_signals.m_internals->SetBestChain.connect(boost::bind(&CValidationInterface::SetBestChain, pwalletIn, _1));
@@ -73,7 +73,7 @@ void UnregisterValidationInterface(CValidationInterface* pwalletIn) {
     g_signals.m_internals->SetBestChain.disconnect(boost::bind(&CValidationInterface::SetBestChain, pwalletIn, _1));
     g_signals.m_internals->UpdatedTransaction.disconnect(boost::bind(&CValidationInterface::UpdatedTransaction, pwalletIn, _1));
     g_signals.m_internals->EraseTransaction.disconnect(boost::bind(&CValidationInterface::EraseFromWallet, pwalletIn, _1));
-    g_signals.m_internals->SyncTransaction.disconnect(boost::bind(&CValidationInterface::SyncTransaction, pwalletIn, _1, _2));
+    //g_signals.m_internals->SyncTransaction.disconnect(boost::bind(&CValidationInterface::SyncTransaction, pwalletIn, _1, _2));
     g_signals.m_internals->UpdatedBlockTip.disconnect(boost::bind(&CValidationInterface::UpdatedBlockTip, pwalletIn, _1, _2, _3));
     /** TODO: Add these later*/
     //g_signals.m_internals->TransactionAddedToMempool.disconnect(boost::bind(&CValidationInterface::TransactionAddedToMempool, pwalletIn, _1));
@@ -91,7 +91,7 @@ void UnregisterAllValidationInterfaces() {
     g_signals.m_internals->SetBestChain.disconnect_all_slots();
     g_signals.m_internals->EraseTransaction.disconnect_all_slots();
     g_signals.m_internals->UpdatedTransaction.disconnect_all_slots();
-    g_signals.m_internals->SyncTransaction.disconnect_all_slots();
+    //g_signals.m_internals->SyncTransaction.disconnect_all_slots();
     g_signals.m_internals->UpdatedBlockTip.disconnect_all_slots();
     /** TODO Add these later */
     //g_signals.m_internals->TransactionAddedToMempool.disconnect_all_slots();
@@ -153,6 +153,8 @@ void CMainSignals::NewPoWValidBlock(const CBlockIndex *pindex, const std::shared
     m_internals->NewPoWValidBlock(pindex, block);
 }
 */
+/*
 void SyncWithWallets(const CTransaction &tx, const CBlock *pblock) {
     g_signals.SyncTransaction(tx, pblock);
 }
+*/
